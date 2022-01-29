@@ -3,38 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum Moods { DEMON = -3, ANGRY, PISED, NEUTRAL = 0, HAPPY, ALTRUIST, ANGEL }
 
 public class AgentController : MonoBehaviour
 {
-    const uint MOODS_LENGTH = 7;
-    const uint ACTIONS_LENGTH = 8;
+    [SerializeField] float decisionTime = 1f;
+
+    DecisionManager decisionManager;
 
     NavMeshAgent navMesh;
 
     Vector3 targetPosition;
 
     Moods mood;
-    NeutralActions neutralAction;
-    SelfishActions selfishAction;
-    AltruistActions atruistAction;
+    Actions action;
 
     float[][] decisionMatrix;
 
-    bool onAction;
+    float decisionCounter;
 
     public Vector3 TargetPosition { set { targetPosition = value; } }
 
     void Start()
     {
+        decisionManager = GameObject.Find("Manager").GetComponent<DecisionManager>();
+
         navMesh = GetComponent<NavMeshAgent>();
 
         mood = Moods.NEUTRAL;
-        onAction = false;
+        action = Actions.NONE;
     }
 
     void Update()
     {
+        if (action == Actions.NONE)
+        {
+
+        }
+        else
+        {
+
+        }
+
         navMesh.SetDestination(targetPosition);
     }
 
