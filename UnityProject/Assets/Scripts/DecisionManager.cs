@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Actions { NONE = -1, PATROL = 0, COLLECT_FOOD, STEAL_FOOD, STEAL_EGG, GIVE_FOOD, GIVE_EGG, SAVE, KILL }
-public enum Moods { ANGEL = 0, ALTRUIST, GOOD, NEUTRAL=3, PISSED, ANGRY, DEMON } 
+
 
 
 public class DecisionManager : MonoBehaviour
 {
-    const uint MOODS_COUNT = 7;
-    const uint ACTIONS_COUNT = 8;
-    const uint SPECIAL_ACTIONS_COUNT = 2;
 
     readonly float[,] decisionMatrix = new float[,] { 
         { 0,    0,      0,      0,      0.5f,   0.5f,   1,       0   },
@@ -37,9 +33,9 @@ public class DecisionManager : MonoBehaviour
         {
             i++;
             accProb += decisionMatrix[(uint)mood, i];
-        } while (i < ACTIONS_COUNT - SPECIAL_ACTIONS_COUNT && r > accProb);
+        } while (i < Globals.ACTIONS_COUNT - Globals.SPECIAL_ACTIONS_COUNT && r > accProb);
 
-        if (i == ACTIONS_COUNT - SPECIAL_ACTIONS_COUNT)
+        if (i == Globals.ACTIONS_COUNT - Globals.SPECIAL_ACTIONS_COUNT)
         {
             Debug.LogWarning("No action choosen");
         }
