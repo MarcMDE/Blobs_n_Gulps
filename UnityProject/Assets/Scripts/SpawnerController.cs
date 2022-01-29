@@ -31,12 +31,7 @@ public class SpawnerController : MonoBehaviour
     {
         for (uint i=0; i<n; i++)
         {
-            float t = Random.Range(0.0f, 2 * Mathf.PI);
-            float rr = Random.Range(0.0f, r);
-            Vector3 position = new Vector3(
-                o.x + rr * Mathf.Cos(t),
-                o.y,
-                o.y + rr * Mathf.Sin(t));
+            Vector3 position = Utils.RandomCircPosition(o, r);
 
             Spawn(position, Vector3.zero);
         }

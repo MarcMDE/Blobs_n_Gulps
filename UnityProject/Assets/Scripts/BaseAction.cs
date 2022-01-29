@@ -23,6 +23,11 @@ public abstract class BaseAction : MonoBehaviour
     {
         navMeshAgent.destination = p;
 
-        return (transform.position - p).sqrMagnitude < r;
+        if ((transform.position - p).sqrMagnitude < r)
+        {
+            navMeshAgent.SetDestination(transform.position);
+            return true;
+        }
+        return false;
     }
 }

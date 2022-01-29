@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 447929034}
   - component: {fileID: 447929035}
   - component: {fileID: 447929036}
+  - component: {fileID: 1171829373}
   m_Layer: 0
   m_Name: Blob
   m_TagString: Untagged
@@ -164,4 +165,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3972776cee09f3c4dbce7a96d98f29ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arriveRadius: 1
+  arriveRadius: 2
+--- !u!114 &1171829373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368237735333473095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95180deb803c69740b0b3b8404594344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arriveRadius: 2
+  carryOffset: {x: 0, y: 0, z: 1}

@@ -38,8 +38,8 @@ public class AgentController : MonoBehaviour
 
         actions[(int)Actions.PATROL] = GetComponent<PatrolAction>();
         actions[(int)Actions.PATROL].enabled = false;
-
-
+        actions[(int)Actions.COLLECT_FOOD] = GetComponent<CollectFoodAction>();
+        actions[(int)Actions.COLLECT_FOOD].enabled = false;
 
         mood = Moods.NEUTRAL;
         action = Actions.NONE;
@@ -60,8 +60,7 @@ public class AgentController : MonoBehaviour
             {
                 decisionCounter = 0;
 
-                //action = decisionManager.GetNewAction(mood);
-                action = Actions.PATROL;
+                action = decisionManager.GetNewAction(mood);
                 actions[(int)action].enabled = true;
                 actions[(int)action].Init();
                 Debug.Log("Start action" + action.ToString());

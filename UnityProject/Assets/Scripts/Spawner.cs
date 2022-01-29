@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner/* : MonoBehaviour*/
+public class Spawner
 {
     GameObject o;
     uint poolSize = 0;
     Transform parent;
     GameObject[] objects;
+
+    public uint PoolSize { get { return poolSize; } }
 
     public Spawner(GameObject o, uint poolSize, Transform parent)
     {
@@ -43,5 +45,10 @@ public class Spawner/* : MonoBehaviour*/
 
         Debug.LogWarning("No objects available");
         return null;
+    }
+
+    public GameObject Get(uint i)
+    {
+        return objects[i];
     }
 }
