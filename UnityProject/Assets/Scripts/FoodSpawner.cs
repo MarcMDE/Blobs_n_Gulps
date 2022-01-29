@@ -9,6 +9,7 @@ public class FoodSpawner : MonoBehaviour
     [SerializeField] uint poolSize = 20;
     [SerializeField] float radius = Globals.WorldSize/2;
     [SerializeField] float spawnTime = 1.0f;
+    [SerializeField] Vector3 offset;
 
     float spawnCounter;
 
@@ -32,7 +33,7 @@ public class FoodSpawner : MonoBehaviour
             if (foodInst != null)
             {
                 Vector3 pos = Utils.RandomCircPosition(transform.position, radius);
-                foodInst.transform.position = pos;
+                foodInst.transform.position = pos + offset;
                 foodInst.SetActive(true);
             }
         }

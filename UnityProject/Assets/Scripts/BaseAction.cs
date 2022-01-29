@@ -6,10 +6,12 @@ using UnityEngine.AI;
 public abstract class BaseAction : MonoBehaviour
 {
     protected NavMeshAgent navMeshAgent;
+    protected Animator animator;
 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
 
         OnStart();
     }

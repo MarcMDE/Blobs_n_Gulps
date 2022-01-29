@@ -6,6 +6,7 @@ public class Food : MonoBehaviour
 {
     [SerializeField] Color onSelect;
     Color original;
+    Rigidbody rb;
 
     public bool Taken { get { return taken; } }
     public bool Selected { get { return selected; } }
@@ -18,6 +19,7 @@ public class Food : MonoBehaviour
     void Start()
     {
         meshRenderer = GetComponent<Renderer>();
+        rb = GetComponent<Rigidbody>();
         original = meshRenderer.material.color;
     }
 
@@ -30,12 +32,17 @@ public class Food : MonoBehaviour
     {
         selected = true;
         meshRenderer.material.color = onSelect;
-        //meshRenderer.material = onSelect;
     }
 
     public void Take()
     {
+        rb.isKinematic = true;
+        rb.useGravity = false;
+    }
 
+    public void Release()
+    {
+        // TODO
     }
 
     public void Reset()
@@ -45,5 +52,11 @@ public class Food : MonoBehaviour
 
         if (meshRenderer != null)
             meshRenderer.material.color = original;
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+        }
     }
 }

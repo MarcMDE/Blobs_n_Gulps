@@ -27,6 +27,7 @@ public class CollectFoodAction : BaseAction
         food = foodSpawner.GetAvailable();
         food.Select();
         step = Steps.SEARCH;
+        animator.SetBool("walking", true);
     }
 
     public override bool Update()
@@ -46,6 +47,7 @@ public class CollectFoodAction : BaseAction
                 // TODO: Interact anim
                 food.transform.parent = transform;
                 food.transform.localPosition = carryOffset;
+                food.Take();
                 step = Steps.GO_TO_DEPOT;
                 break;
             case Steps.GO_TO_DEPOT:
