@@ -45,7 +45,6 @@ public class SpawnerController : MonoBehaviour
 
     public void Spawn(Vector3 p, Vector3 r)
     {
-        Debug.Log("Spawn");
         GameObject o = spawner.Spawn();
         o.transform.position = p;
         o.transform.rotation = Quaternion.Euler(r);

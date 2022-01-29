@@ -7,8 +7,10 @@ public enum Moods { ANGEL = 0, ALTRUIST, GOOD, NEUTRAL = 3, PISSED, ANGRY, DEMON
 
 public static class Globals
 {
-    public static float WorldSize = 10;
+    public static float WorldSize = 200;
     public static uint MOODS_COUNT = 7;
     public static uint ACTIONS_COUNT = 8;
     public static uint SPECIAL_ACTIONS_COUNT = 2;
+    public static float WORLD_MAX_HEIGHT = 15;
+    public static int GROUND_LAYER = 64;
 }

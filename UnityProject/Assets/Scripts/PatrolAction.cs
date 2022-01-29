@@ -7,16 +7,19 @@ public class PatrolAction : BaseAction
 {
     [SerializeField] float arriveRadius = 2.0f;
 
-    Vector3 target;
+    Vector3 target = Vector3.zero;
 
     public override void OnStart()
     {
+
         arriveRadius *= arriveRadius;
     }
 
     public override void Init()
     {
-        target = new Vector3(Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2), 0, Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2));
+        target = GetPosition();
+        print("Target: " + target);
+        //target = new Vector3(Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2), 0, Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2));
     }
 
     public override bool Update()
@@ -29,9 +32,27 @@ public class PatrolAction : BaseAction
 
     }
 
+
+   
+
+    Vector3 GetPosition()
+    {
+        Vector3 pos = new Vector3(Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2), Globals.WORLD_MAX_HEIGHT, Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2));
+        RaycastHit hit;
+        var ray = new Ray(pos, Vector3.down);
+
+        if (Physics.Raycast(ray, out hit, Globals.WORLD_MAX_HEIGHT+1, Globals.GROUND_LAYER))
+        {
+            return hit.point;
+        }
+
+        return pos;
+    }
+
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.white;
-        Gizmos.DrawSphere(target, 0.3f);
+        Gizmos.color = Color.black;
+        Gizmos.DrawSphere(target, 2);
     }
+    
 }

@@ -2846,7 +2846,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-118774
+  m_Name: pb_Mesh-262362
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3054,6 +3054,10 @@ PrefabInstance:
     - target: {fileID: 2370893057868244338, guid: ef1f0b34da8bf7145845e22bfc0b6099, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2370893057868244339, guid: ef1f0b34da8bf7145845e22bfc0b6099, type: 3}
+      propertyPath: initialN
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2370893057868244340, guid: ef1f0b34da8bf7145845e22bfc0b6099, type: 3}
       propertyPath: m_Name
@@ -3793,20 +3797,20 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: -0.55306983, z: -0, w: 0.83313495}
+  m_LocalPosition: {x: 12.09, y: 8.3, z: 29.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -67.156, z: 0}
 --- !u!43 &989195211
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-119318
+  m_Name: pb_Mesh-262994
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8677,6 +8681,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1696677253485418520, guid: 98f0753cd1570324684bca74d4ad31c9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7406007720699760944, guid: 98f0753cd1570324684bca74d4ad31c9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -8845,6 +8853,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1453561244}
+    - target: {fileID: 7406007721483050136, guid: 98f0753cd1570324684bca74d4ad31c9, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7406007721483050137, guid: 98f0753cd1570324684bca74d4ad31c9, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -9004,6 +9016,10 @@ PrefabInstance:
     - target: {fileID: 7406007722029783566, guid: 98f0753cd1570324684bca74d4ad31c9, type: 3}
       propertyPath: m_Name
       value: Scenario
+      objectReference: {fileID: 0}
+    - target: {fileID: 7406007722040555348, guid: 98f0753cd1570324684bca74d4ad31c9, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7406007722058761218, guid: 98f0753cd1570324684bca74d4ad31c9, type: 3}
       propertyPath: m_Mesh

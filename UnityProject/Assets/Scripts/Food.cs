@@ -5,6 +5,7 @@ using UnityEngine;
 public class Food : MonoBehaviour
 {
     [SerializeField] Color onSelect;
+    [SerializeField] float takenSinStrength;
     Color original;
     Rigidbody rb;
 
@@ -26,6 +27,15 @@ public class Food : MonoBehaviour
     private void OnEnable()
     {
         Reset();
+    }
+
+    private void Update()
+    {
+        if (taken)
+        {
+            float offset = Mathf.Sin(Time.deltaTime) * takenSinStrength;
+            transform.localPosition += new Vector3(0, offset, 0);
+        }
     }
 
     public void Select()

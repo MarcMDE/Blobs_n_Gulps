@@ -8,12 +8,12 @@ public abstract class BaseAction : MonoBehaviour
     protected NavMeshAgent navMeshAgent;
     protected Animator animator;
 
-    void Start()
+    void Awake()
     {
+        OnStart();
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
 
-        OnStart();
     }
 
     public abstract void OnStart();

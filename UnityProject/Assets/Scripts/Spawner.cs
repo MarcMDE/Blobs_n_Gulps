@@ -43,7 +43,7 @@ public class Spawner
         if (i < poolSize)
             return objects[i];
 
-        Debug.LogWarning("No objects available");
+        //Debug.LogWarning("No objects available");
         return null;
     }
 

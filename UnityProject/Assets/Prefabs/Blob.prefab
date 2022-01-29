@@ -315,7 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arriveRadius: 2
-  carryOffset: {x: 0, y: 0, z: 1}
+  carryOffset: {x: 0, y: 2.5, z: 2.5}
 --- !u!1 &2851575633382918316
 GameObject:
   m_ObjectHideFlags: 0
