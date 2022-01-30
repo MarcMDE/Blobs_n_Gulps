@@ -6,6 +6,7 @@ public class StealFoodAction : BaseAction
 {
     enum Steps { GO_TO_ENEMY_DEPOT, STEAL, GO_TO_DEPOT, STORE, END };
     [SerializeField] float arriveRadius = 2.0f;
+    [SerializeField] float dropRadius = 5f;
 
     FoodSpawner foodSpawner;
     DepotManager depotManager;
@@ -17,6 +18,7 @@ public class StealFoodAction : BaseAction
     protected override void OnStart()
     {
         arriveRadius *= arriveRadius;
+        dropRadius *= dropRadius;
         foodSpawner = GameObject.Find("FoodSpawner").GetComponent<FoodSpawner>();
         depotManager = GameObject.Find(Globals.NAMES[(int)faction] + "Depot").GetComponent<DepotManager>();
         enemyDepotManager = GameObject.Find(Globals.NAMES[1-(int)faction] + "Depot").GetComponent<DepotManager>();
@@ -24,12 +26,15 @@ public class StealFoodAction : BaseAction
 
     public override void Init()
     {
+        showMood = false;
+
         // TODO: return bool? -> food can be null
         if (enemyDepotManager.Food > 0)
             step = Steps.GO_TO_ENEMY_DEPOT;
         else
             step = Steps.END;
     }
+
 
     public override bool Update()
     {
@@ -39,9 +44,11 @@ public class StealFoodAction : BaseAction
         switch (step)
         {
             case Steps.GO_TO_ENEMY_DEPOT:
-                if (MoveTowards(enemyDepotManager.transform.position, arriveRadius))
+                if (MoveTowards(enemyDepotManager.transform.position, dropRadius))
                 {
                     step = Steps.STEAL;
+                    showMood = true;
+                    StartCoroutine(ResetMood());
                 }
                 break;
             case Steps.STEAL:
@@ -57,15 +64,15 @@ public class StealFoodAction : BaseAction
 
                     food.transform.parent = transform;
                     food.transform.localPosition = Globals.CARRY_OFFSET;
+                    step = Steps.GO_TO_DEPOT;
                 }
                 else
                     step = Steps.END;
 
                 
-                step = Steps.GO_TO_DEPOT;
                 break;
             case Steps.GO_TO_DEPOT:
-                if (MoveTowards(depotManager.transform.position, arriveRadius))
+                if (MoveTowards(depotManager.transform.position, dropRadius))
                 {
                     step = Steps.STORE;
                 }
@@ -89,8 +96,11 @@ public class StealFoodAction : BaseAction
         if (food != null)
         {
             food.Reset();
+            food.transform.parent = foodSpawner.transform.parent;
             food = null;
         }
+
+        navMeshAgent.destination = transform.position;
     }
 
     void OnDrawGizmosSelected()

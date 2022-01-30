@@ -9,14 +9,14 @@ public class DecisionManager : MonoBehaviour
 {
 
     readonly float[,] decisionMatrix = new float[,] { 
-        // Patrol, CollectF, StealF, StealE, GiveF, GiveE, Save, Kill
-        { 0,    0,      0,      0,      0.5f,   0.5f,   1,       0   },
-        { 0,    0.2f,   0,      0,      0.4f,   0.4f,   0.1f,    0   },
-        { 0,    0.5f,   0,      0,      0.4f,   0.1f,   0,       0   },
-        { 0,    0.0f,   0.0f,   0,      1,      0,      0,       0   },
-        { 0,    0.5f,   0.4f,   0.1f,   0,      0,      0,       0   },
-        { 0,    0.2f,   0.4f,   0.4f,   0,      0,      0,       0.1f},
-        { 0,    0,      0.5f,   0.5f,   0,      0,      0,       1   }
+        // Patrol,  CollectF,    StealF,    StealE,     GiveF,  GiveE,  Save,   Kill
+        { 0,        0,          0,          0,          0.5f,   0.5f,   1,       0   },
+        { 0,        0.2f,       0,          0,          0.4f,   0.4f,   0.1f,    0   },
+        { 0,        0.5f,       0,          0,          0.5f,   0,      0,       0   },
+        { 0.2f,     0.4f,       0.2f,       0,          0.2f,   0,      0,       0   },
+        { 0,        0.5f,       0.5f,       0,          0,      0,      0,       0   },
+        { 0,        0.2f,       0.4f,       0.4f,       0,      0,      0,       0.1f},
+        { 0,        0,          0.5f,       0.5f,       0,      0,      0,       1   }
     };
     
     void Start()
@@ -33,10 +33,10 @@ public class DecisionManager : MonoBehaviour
         do
         {
             i++;
-            accProb += decisionMatrix[(uint)mood, i];
-        } while (i < Globals.ACTIONS_COUNT - Globals.SPECIAL_ACTIONS_COUNT && r > accProb);
+            accProb += decisionMatrix[(int)mood, i];
+        } while (i < Globals.ACTIONS_COUNT - Globals.SPECIAL_ACTIONS_COUNT - 1 && r > accProb);
 
-        if (i == Globals.ACTIONS_COUNT - Globals.SPECIAL_ACTIONS_COUNT)
+        if (i >= Globals.ACTIONS_COUNT - Globals.SPECIAL_ACTIONS_COUNT)
         {
             Debug.LogWarning("No action choosen");
         }

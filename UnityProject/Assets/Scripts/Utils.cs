@@ -15,4 +15,10 @@ public static class Utils
 
         return position;
     }
+
+    public static float SqrDist2D(Vector3 a, Vector3 b)
+    {
+        Vector3 diff = a - b;
+        return diff.x * diff.x + diff.z * diff.z;
+    }
 }

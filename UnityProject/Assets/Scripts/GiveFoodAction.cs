@@ -6,6 +6,7 @@ public class GiveFoodAction : BaseAction
 {
     enum Steps { SEARCH, GET, GO_TO_DEPOT, STORE, END };
     [SerializeField] float arriveRadius = 2.0f;
+    [SerializeField] float dropRadius = 5;
 
     FoodSpawner foodSpawner;
     DepotManager depotManager;
@@ -16,6 +17,8 @@ public class GiveFoodAction : BaseAction
     protected override void OnStart()
     {
         arriveRadius *= arriveRadius;
+        dropRadius *= dropRadius;
+
         foodSpawner = GameObject.Find("FoodSpawner").GetComponent<FoodSpawner>();
         depotManager = GameObject.Find(Globals.NAMES[1-(int)faction] + "Depot").GetComponent<DepotManager>();
     }
@@ -55,9 +58,11 @@ public class GiveFoodAction : BaseAction
                 step = Steps.GO_TO_DEPOT;
                 break;
             case Steps.GO_TO_DEPOT:
-                if (MoveTowards(depotManager.transform.position, arriveRadius))
+                if (MoveTowards(depotManager.transform.position, dropRadius))
                 {
                     step = Steps.STORE;
+                    showMood = true;
+                    StartCoroutine(ResetMood());
                 }
                 break;
             case Steps.STORE:
@@ -78,8 +83,11 @@ public class GiveFoodAction : BaseAction
         if (food != null)
         {
             food.Reset();
+            food.transform.parent = foodSpawner.transform.parent;
             food = null;
         }
+
+        navMeshAgent.destination = transform.position;
     }
 
     void OnDrawGizmosSelected()
