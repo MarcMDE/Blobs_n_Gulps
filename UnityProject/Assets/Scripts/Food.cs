@@ -17,7 +17,7 @@ public class Food : MonoBehaviour
 
     Renderer meshRenderer;
 
-    void Start()
+    void Awake()
     {
         meshRenderer = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody>();

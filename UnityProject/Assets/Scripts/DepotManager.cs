@@ -10,19 +10,19 @@ public class DepotManager : MonoBehaviour
 
     void Start()
     {
-        food = 0;
+        food = 5;
     }
     
     public void AddFood()
     {
         food+=1;
-        Debug.Log("Depot food: " + food);
+        Debug.Log(name + " food: " + food);
     }
 
     public void GetFood()
     {
         food -= 1;
-        Debug.Log("Depot food: " + food);
+        Debug.Log(name + " food: " + food);
     }
 
     public bool UseFood(uint n)

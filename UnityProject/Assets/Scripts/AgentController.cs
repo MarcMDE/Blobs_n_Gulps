@@ -12,7 +12,8 @@ public class AgentController : MonoBehaviour
     DecisionManager decisionManager;
     Rigidbody rb;
 
-    NavMeshAgent navMesh;
+    NavMeshAgent navMeshAgent;
+    Animator animator;
 
     Vector3 targetPosition;
 
@@ -31,7 +32,8 @@ public class AgentController : MonoBehaviour
     {
         decisionManager = GameObject.Find("Manager").GetComponent<DecisionManager>();
 
-        navMesh = GetComponent<NavMeshAgent>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
 
         actions = new BaseAction[Globals.ACTIONS_COUNT];
@@ -40,6 +42,8 @@ public class AgentController : MonoBehaviour
         actions[(int)Actions.PATROL].enabled = false;
         actions[(int)Actions.COLLECT_FOOD] = GetComponent<CollectFoodAction>();
         actions[(int)Actions.COLLECT_FOOD].enabled = false;
+        actions[(int)Actions.STEAL_FOOD] = GetComponent<StealFoodAction>();
+        actions[(int)Actions.STEAL_FOOD].enabled = false;
 
         mood = Moods.NEUTRAL;
         action = Actions.NONE;
@@ -52,6 +56,7 @@ public class AgentController : MonoBehaviour
 
     void Update()
     {
+
         if (action == Actions.NONE)
         {
             if (decisionCounter < decisionTime)
@@ -77,5 +82,10 @@ public class AgentController : MonoBehaviour
         }
     }
 
-    
+    void FixedUpdate()
+    {
+        animator.SetFloat("velocity", navMeshAgent.velocity.sqrMagnitude);
+    }
+
+
 }

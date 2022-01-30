@@ -9,7 +9,7 @@ public class PatrolAction : BaseAction
 
     Vector3 target = Vector3.zero;
 
-    public override void OnStart()
+    protected override void OnStart()
     {
 
         arriveRadius *= arriveRadius;
@@ -18,8 +18,6 @@ public class PatrolAction : BaseAction
     public override void Init()
     {
         target = GetPosition();
-        print("Target: " + target);
-        //target = new Vector3(Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2), 0, Random.Range(-Globals.WorldSize / 2, Globals.WorldSize / 2));
     }
 
     public override bool Update()

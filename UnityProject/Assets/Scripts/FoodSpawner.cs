@@ -8,7 +8,7 @@ public class FoodSpawner : MonoBehaviour
     [SerializeField] GameObject prefab;
     [SerializeField] uint poolSize = 20;
     [SerializeField] float radius = Globals.WorldSize/2;
-    [SerializeField] float spawnTime = 1.0f;
+    [SerializeField] float spawnTime = 100.0f;
     [SerializeField] Vector3 offset;
 
     float spawnCounter;
@@ -26,6 +26,7 @@ public class FoodSpawner : MonoBehaviour
             spawnCounter += Time.deltaTime;
         else
         {
+            
             spawnCounter = 0;
 
             GameObject foodInst = spawner.Spawn();
@@ -36,7 +37,15 @@ public class FoodSpawner : MonoBehaviour
                 foodInst.transform.position = pos + offset;
                 foodInst.SetActive(true);
             }
+            
         }
+    }
+
+    public Food GetNew()
+    {
+        GameObject foodInst = spawner.Spawn();
+        foodInst.SetActive(true);
+        return foodInst.GetComponent<Food>();
     }
 
     public Food GetAvailable()

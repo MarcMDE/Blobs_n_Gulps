@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectFoodAction : BaseAction
+public class StealFoodAction : BaseAction
 {
-    enum Steps { SEARCH, GET, GO_TO_DEPOT, STORE, END };
+    enum Steps { GO_TO_ENEMY_DEPOT, STEAL, GO_TO_DEPOT, STORE, END };
     [SerializeField] float arriveRadius = 2.0f;
 
     FoodSpawner foodSpawner;
     DepotManager depotManager;
-    
+    DepotManager enemyDepotManager;
+
     Food food;
     Steps step;
 
@@ -17,36 +18,50 @@ public class CollectFoodAction : BaseAction
     {
         arriveRadius *= arriveRadius;
         foodSpawner = GameObject.Find("FoodSpawner").GetComponent<FoodSpawner>();
-        depotManager = GameObject.Find(Globals.NAMES[(int)faction]+"Depot").GetComponent<DepotManager>();
+        depotManager = GameObject.Find(Globals.NAMES[(int)faction] + "Depot").GetComponent<DepotManager>();
+        enemyDepotManager = GameObject.Find(Globals.NAMES[1-(int)faction] + "Depot").GetComponent<DepotManager>();
     }
 
     public override void Init()
     {
         // TODO: return bool? -> food can be null
-        food = foodSpawner.GetAvailable();
-        food.Select();
-        step = Steps.SEARCH;
+        if (enemyDepotManager.Food > 0)
+            step = Steps.GO_TO_ENEMY_DEPOT;
+        else
+            step = Steps.END;
     }
 
     public override bool Update()
     {
-        if (food == null || step == Steps.END) 
+        if (step == Steps.END)
             return true;
 
         switch (step)
         {
-            case Steps.SEARCH:
-                if (MoveTowards(food.transform.position, arriveRadius))
+            case Steps.GO_TO_ENEMY_DEPOT:
+                if (MoveTowards(enemyDepotManager.transform.position, arriveRadius))
                 {
-                    step = Steps.GET;
+                    step = Steps.STEAL;
                 }
                 break;
-            case Steps.GET:
+            case Steps.STEAL:
                 // TODO: Interact anim
+
+                if (enemyDepotManager.Food > 0)
+                {
+                    enemyDepotManager.GetFood();
+                    food = foodSpawner.GetNew();
+
+                    food.Select();
+                    food.Take();
+
+                    food.transform.parent = transform;
+                    food.transform.localPosition = Globals.CARRY_OFFSET;
+                }
+                else
+                    step = Steps.END;
+
                 
-                food.transform.parent = transform;
-                food.transform.localPosition = Globals.CARRY_OFFSET;
-                food.Take();
                 step = Steps.GO_TO_DEPOT;
                 break;
             case Steps.GO_TO_DEPOT:

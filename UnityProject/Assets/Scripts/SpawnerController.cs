@@ -33,7 +33,7 @@ public class SpawnerController : MonoBehaviour
         {
             Vector3 position = Utils.RandomCircPosition(o, r);
 
-            Spawn(position, Vector3.zero);
+            Spawn(position + transform.position, Vector3.zero);
         }
     }
 
