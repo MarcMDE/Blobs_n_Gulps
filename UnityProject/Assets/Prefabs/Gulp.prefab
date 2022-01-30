@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 416908259339737203}
   - component: {fileID: 416908257810280642}
   - component: {fileID: 3305124854743400649}
+  - component: {fileID: -2089565328962896146}
   m_Layer: 0
   m_Name: Gulp
   m_TagString: Untagged
@@ -328,6 +329,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79017899daf214b4c80ae40200bda280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faction: 1
+  arriveRadius: 2
+--- !u!114 &-2089565328962896146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672474983139109368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ccc8ddcf3204240b42001d08122e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   faction: 1

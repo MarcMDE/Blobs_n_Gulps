@@ -44,6 +44,8 @@ public class AgentController : MonoBehaviour
         actions[(int)Actions.COLLECT_FOOD].enabled = false;
         actions[(int)Actions.STEAL_FOOD] = GetComponent<StealFoodAction>();
         actions[(int)Actions.STEAL_FOOD].enabled = false;
+        actions[(int)Actions.GIVE_FOOD] = GetComponent<GiveFoodAction>();
+        actions[(int)Actions.GIVE_FOOD].enabled = false;
 
         mood = Moods.NEUTRAL;
         action = Actions.NONE;
