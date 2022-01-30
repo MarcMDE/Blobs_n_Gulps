@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnerController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class SpawnerController : MonoBehaviour
     Spawner spawner;
     [SerializeField] uint initialN;
     [SerializeField] float initialR;
+
+    [SerializeField] Text text;
 
     void Start()
     {
@@ -24,7 +27,15 @@ public class SpawnerController : MonoBehaviour
 
     void Update()
     {
-        
+        int count = 0;
+        for (uint i=0; i<poolSize; i++)
+        {
+
+            if (spawner.Get(i).activeInHierarchy)
+                count++;
+        }
+
+        text.text = count.ToString();
     }
 
     public void SpawnInitial(uint n, Vector3 o, float r)

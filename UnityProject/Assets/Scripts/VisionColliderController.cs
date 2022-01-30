@@ -20,15 +20,15 @@ public class VisionColliderController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (canSee)
+        //if (canSee)
         {
             AgentController otherController = other.GetComponent<AgentController>();
 
 
             controller.Mood = otherController.GetMoodChange(controller.Mood);
             
-            canSee = false;
-            StartCoroutine(ResetVision());
+            //canSee = false;
+            //StartCoroutine(ResetVision());
         }
     }
 

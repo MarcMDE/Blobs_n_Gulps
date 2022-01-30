@@ -6,40 +6,59 @@ public class Huevo : MonoBehaviour
 {
     [SerializeField] float incubationTime;
     [SerializeField] Factions faction;
-    [SerializeField] float creationCD;
+    [SerializeField] float waveCD;
     [SerializeField] int costHUEVO;
+    [SerializeField] float timeBtwSpawn;
     private Rigidbody rb;
     private SpawnerController spawner;
     private DepotManager depot;
-    private float counter = 0f;
+    private DepotManager enemyDepot;
+    private float counter;
 
-    float spawnTime;
-    int eggsToSpawn;
     
     // Start is called before the first frame update
     void Start()
     {
         spawner = GameObject.Find(Globals.NAMES[(int)faction] + "Spawner").GetComponent<SpawnerController>();
         depot = GameObject.Find(Globals.NAMES[(int)faction] + "Depot").GetComponent<DepotManager>();
+        enemyDepot = GameObject.Find(Globals.NAMES[1-(int)faction] + "Depot").GetComponent<DepotManager>();
+        counter = waveCD * 0.75f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(counter < creationCD)
+        if(counter < waveCD)
         {
             counter += Time.deltaTime;
         }
         else
         {
-            if (depot.UseFood(costHUEVO))
+            int numHuevos = depot.Food / costHUEVO;
+            int huevosDiff = depot.Food - enemyDepot.Food;
+            
+            if (depot.UseFood(numHuevos*costHUEVO))
             {
-                StartCoroutine(GenerateHUEVO());
+                /*
+                if (huevosDiff > 0)
+                    numHuevos += huevosDiff;
+                */
+                
+                StartCoroutine(GenerateWave(numHuevos));
                 counter = 0f;
             }
             
         }
         
+    }
+    IEnumerator GenerateWave(int count)
+    {
+        for(int i = 0; i<count; i++)
+        {
+            StartCoroutine(GenerateHUEVO());
+            yield return new WaitForSeconds(timeBtwSpawn);
+        }
+        yield return null;
     }
     IEnumerator GenerateHUEVO(){
         GameObject newHuevo = Instantiate(transform.GetChild(0).gameObject, transform.GetChild(0).position, transform.GetChild(0).rotation, transform);

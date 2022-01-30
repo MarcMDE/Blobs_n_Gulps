@@ -65,6 +65,8 @@ public class StealFoodAction : BaseAction
                     food.transform.parent = transform;
                     food.transform.localPosition = Globals.CARRY_OFFSET;
                     step = Steps.GO_TO_DEPOT;
+
+                    GetComponent<AgentController>().Mood = Moods.NEUTRAL;
                 }
                 else
                     step = Steps.END;

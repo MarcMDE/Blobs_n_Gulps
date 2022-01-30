@@ -70,6 +70,7 @@ public class GiveFoodAction : BaseAction
                 depotManager.AddFood();
                 food.transform.parent = foodSpawner.transform;
                 food.gameObject.SetActive(false);
+                GetComponent<AgentController>().Mood = Moods.NEUTRAL;
                 step = Steps.END;
                 break;
             default:

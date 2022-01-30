@@ -12,9 +12,11 @@ public class AgentController : MonoBehaviour
     [SerializeField] Factions faction;
     [SerializeField] GameObject crown;
     [SerializeField] Material good, bad, neutral;
+    [SerializeField] float godSpeed = 20f;
 
     DecisionManager decisionManager;
     Rigidbody rb;
+    float regularSpeed;
 
 
 
@@ -57,6 +59,7 @@ public class AgentController : MonoBehaviour
         enemyDepotManager = GameObject.Find(Globals.NAMES[1 - (int)faction] + "Depot").GetComponent<DepotManager>();
 
         navMeshAgent = GetComponent<NavMeshAgent>();
+        regularSpeed = navMeshAgent.speed;
         animator = GetComponentInChildren<Animator>();
         foodSpawner = GameObject.Find("FoodSpawner").GetComponent<FoodSpawner>();
         rb = GetComponent<Rigidbody>();
@@ -89,6 +92,7 @@ public class AgentController : MonoBehaviour
     {
         if (!possesed)
         {
+            navMeshAgent.speed = regularSpeed;
 
             if (action == Actions.NONE)
             {
@@ -118,6 +122,7 @@ public class AgentController : MonoBehaviour
         }
         else
         {
+            navMeshAgent.speed = godSpeed;
             if (godSearch)
             {
                 if(MoveTowards(godFood.transform.position, 9))
@@ -132,6 +137,7 @@ public class AgentController : MonoBehaviour
             {
                 if (Utils.SqrDist2D(transform.position, depotManager.transform.position) < 15 * 15)
                 {
+                    print("recolectar");
                     depotManager.AddFood();
                     godFood.transform.parent = foodSpawner.transform;
                     godFood.gameObject.SetActive(false);
@@ -139,18 +145,21 @@ public class AgentController : MonoBehaviour
                 }
                 else if (Utils.SqrDist2D(transform.position, enemyDepotManager.transform.position) < 15 * 15)
                 {
+                    print("Donar a enemy");
                     enemyDepotManager.AddFood();
                     godFood.transform.parent = foodSpawner.transform;
                     godFood.gameObject.SetActive(false);
                     godFood = null;
                     bonet = true;
+                    Mood = Moods.NEUTRAL;
                     StartCoroutine(ResetBonet());
                 }
             }
-            else if (!godSearch && godFood == null)
+            else if (!godSearch && godFood == null && !dolent && !bonet)
             {
                 if (Utils.SqrDist2D(transform.position, enemyDepotManager.transform.position) < 15 * 15)
                 {
+                    print("Agafar de enemy");
                     if (enemyDepotManager.Food > 0)
                     {
                         enemyDepotManager.GetFood();
@@ -162,6 +171,7 @@ public class AgentController : MonoBehaviour
                         godFood.transform.parent = transform;
                         godFood.transform.localPosition = Globals.CARRY_OFFSET;
                         dolent = true;
+                        Mood = Moods.NEUTRAL;
                         StartCoroutine(ResetDolent());
                     }
                 }
@@ -192,6 +202,8 @@ public class AgentController : MonoBehaviour
             actions[(int)action].enabled = false;
             action = Actions.NONE;
         }
+
+        navMeshAgent.speed = godSpeed;
     }
 
     public void SetDestination(Vector3 p)
@@ -206,6 +218,7 @@ public class AgentController : MonoBehaviour
 
     private void Irse()
     {
+        navMeshAgent.speed = regularSpeed;
         godSearch = false;
         if (godFood != null)
         {

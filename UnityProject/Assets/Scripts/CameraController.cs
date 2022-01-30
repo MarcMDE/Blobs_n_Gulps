@@ -25,6 +25,13 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (selectedAgent != null && !selectedAgent.activeInHierarchy)
+        {
+            mode = Modes.GOD;
+            transform.position = new Vector3(transform.position.x, godHeight, transform.position.z);
+            selectedAgent = null;
+        }
+
         if (mode == Modes.GOD)
         {
             Vector3 vPos = Camera.main.ScreenToViewportPoint(Input.mousePosition);

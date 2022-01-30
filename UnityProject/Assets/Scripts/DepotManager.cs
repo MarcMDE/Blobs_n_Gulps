@@ -12,13 +12,12 @@ public class DepotManager : MonoBehaviour
 
     void Start()
     {
-        food = 5;
+        food = 11;
     }
     
     public void AddFood()
     {
         food+=1;
-        Debug.Log(name + " food: " + food);
     }
 
     private void Update()
@@ -29,7 +28,6 @@ public class DepotManager : MonoBehaviour
     public void GetFood()
     {
         food -= 1;
-        Debug.Log(name + " food: " + food);
     }
 
     public bool UseFood(int n)
@@ -37,7 +35,6 @@ public class DepotManager : MonoBehaviour
         if (food - n >= 0)
         {
             food -= n;
-            //Debug.Log("Depot food: " + food);
             return true;
         }
 

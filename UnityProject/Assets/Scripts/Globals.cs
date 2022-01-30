@@ -17,5 +17,5 @@ public static class Globals
     public static int GROUND_LAYER = 64;
     public static Vector3 CARRY_OFFSET = new Vector3(0, 2.5f, 2.5f);
     public static string[] NAMES = { "Blob", "Gulp" };
-    public static float VISIBLE_MOOD_TIME = 3f;
+    public static float VISIBLE_MOOD_TIME = 4f;
 }
