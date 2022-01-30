@@ -7,16 +7,20 @@ public class FoodSpawner : MonoBehaviour
     Spawner spawner;
     [SerializeField] GameObject prefab;
     [SerializeField] uint poolSize = 20;
-    [SerializeField] float radius = Globals.WorldSize/2;
-    [SerializeField] float spawnTime = 100.0f;
+    [SerializeField] float spawnTime = 2.5f;
     [SerializeField] Vector3 offset;
+    [SerializeField] float dec = 0.1f;
+    [SerializeField] float decTime = 15;
+    [SerializeField] float minTime = 0.1f;
 
     float spawnCounter;
 
     void Start()
     {
         spawner = new Spawner(prefab, poolSize, transform);
-        spawnCounter = 0;
+        spawnCounter = spawnTime;
+        StartCoroutine(DecTime());
+        
     }
 
 
@@ -33,8 +37,10 @@ public class FoodSpawner : MonoBehaviour
 
             if (foodInst != null)
             {
-                Vector3 pos = Utils.RandomCircPosition(transform.position, radius);
-                foodInst.transform.position = pos + offset;
+                float x = Random.Range(-Globals.WorldSize / 2 + 5, Globals.WorldSize / 2 - 5);
+                float z = Random.Range(-Globals.WorldSize / 3, Globals.WorldSize / 3);
+                //Vector3 pos = Utils.RandomCircPosition(transform.position, radius);
+                foodInst.transform.position = new Vector3(x, 0, z) + offset;
                 foodInst.SetActive(true);
             }
             
@@ -65,5 +71,13 @@ public class FoodSpawner : MonoBehaviour
         } while (i < spawner.PoolSize && (f == null || f != null && f.Selected));
 
         return f;
+    }
+
+    IEnumerator DecTime()
+    {
+        yield return new WaitForSeconds(decTime);
+        spawnTime -= dec;
+        if (spawnTime < minTime) spawnTime = minTime;
+        yield return null;
     }
 }

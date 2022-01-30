@@ -9,18 +9,38 @@ public class AgentController : MonoBehaviour
     [SerializeField] float decisionTime = 1f;
     [SerializeField] float lifeTime = 120f;
     [SerializeField] int maxMoodLevel = 1;
+    [SerializeField] Factions faction;
+    [SerializeField] GameObject crown;
+    [SerializeField] Material good, bad, neutral;
 
     DecisionManager decisionManager;
     Rigidbody rb;
 
+
+
     NavMeshAgent navMeshAgent;
     Animator animator;
-
+    Food godFood;
     bool possesed;
 
-    public Moods Mood { get; set; }
+    FoodSpawner foodSpawner;
+    public Moods Mood { get { return mood; } set { 
+            mood = value;
+            if (mood == Moods.GOOD)
+                crown.GetComponent<Renderer>().material = good;
+            else if (mood == Moods.PISSED)
+                crown.GetComponent<Renderer>().material = bad;
+            else
+                crown.GetComponent<Renderer>().material = neutral;
+        } }
+    Moods mood;
 
     Actions action;
+
+    DepotManager depotManager;
+    DepotManager enemyDepotManager;
+    bool godSearch;
+    bool dolent, bonet;
 
     float[][] decisionMatrix;
 
@@ -33,8 +53,12 @@ public class AgentController : MonoBehaviour
 
         decisionManager = GameObject.Find("Manager").GetComponent<DecisionManager>();
 
+        depotManager = GameObject.Find(Globals.NAMES[(int)faction] + "Depot").GetComponent<DepotManager>();
+        enemyDepotManager = GameObject.Find(Globals.NAMES[1 - (int)faction] + "Depot").GetComponent<DepotManager>();
+
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        foodSpawner = GameObject.Find("FoodSpawner").GetComponent<FoodSpawner>();
         rb = GetComponent<Rigidbody>();
 
         actions = new BaseAction[Globals.ACTIONS_COUNT];
@@ -52,8 +76,12 @@ public class AgentController : MonoBehaviour
     {
         Mood = Moods.NEUTRAL;
         action = Actions.NONE;
+        godFood = null;
+        godSearch = false;
         decisionCounter = 0;
         possesed = false;
+        bonet = false;
+        dolent = false;
 
         StartCoroutine(Die());
     }
@@ -88,6 +116,71 @@ public class AgentController : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (godSearch)
+            {
+                if(MoveTowards(godFood.transform.position, 9))
+                {
+                    godFood.transform.parent = transform;
+                    godFood.transform.localPosition = Globals.CARRY_OFFSET;
+                    godFood.Take();
+                    godSearch = false;
+                }
+            }
+            else if (godFood != null && godFood.Taken && !dolent && !bonet)
+            {
+                if (Utils.SqrDist2D(transform.position, depotManager.transform.position) < 15 * 15)
+                {
+                    depotManager.AddFood();
+                    godFood.transform.parent = foodSpawner.transform;
+                    godFood.gameObject.SetActive(false);
+                    godFood = null;
+                }
+                else if (Utils.SqrDist2D(transform.position, enemyDepotManager.transform.position) < 15 * 15)
+                {
+                    enemyDepotManager.AddFood();
+                    godFood.transform.parent = foodSpawner.transform;
+                    godFood.gameObject.SetActive(false);
+                    godFood = null;
+                    bonet = true;
+                    StartCoroutine(ResetBonet());
+                }
+            }
+            else if (!godSearch && godFood == null)
+            {
+                if (Utils.SqrDist2D(transform.position, enemyDepotManager.transform.position) < 15 * 15)
+                {
+                    if (enemyDepotManager.Food > 0)
+                    {
+                        enemyDepotManager.GetFood();
+                        godFood = foodSpawner.GetNew();
+
+                        godFood.Select();
+                        godFood.Take();
+
+                        godFood.transform.parent = transform;
+                        godFood.transform.localPosition = Globals.CARRY_OFFSET;
+                        dolent = true;
+                        StartCoroutine(ResetDolent());
+                    }
+                }
+            }
+        }
+    }
+
+    IEnumerator ResetBonet()
+    {
+        yield return new WaitForSeconds(Globals.VISIBLE_MOOD_TIME);
+        bonet = false;
+        yield return null;
+    }
+
+    IEnumerator ResetDolent()
+    {
+        yield return new WaitForSeconds(Globals.VISIBLE_MOOD_TIME);
+        dolent = false;
+        yield return null;
     }
 
     public void Posses()
@@ -108,6 +201,19 @@ public class AgentController : MonoBehaviour
 
     public void LeaveBody()
     {
+        Irse();
+    }
+
+    private void Irse()
+    {
+        godSearch = false;
+        if (godFood != null)
+        {
+            godFood.Reset();
+            godFood.transform.parent = foodSpawner.transform.parent;
+            godFood = null;
+        }
+
         possesed = false;
     }
 
@@ -123,51 +229,91 @@ public class AgentController : MonoBehaviour
             actions[(int)action].End();
             actions[(int)action].enabled = false;
         }
+
+        Irse();
+
         gameObject.SetActive(false);
+
         yield return null;
     }
 
     public Moods GetMoodChange(Moods observerMood)
     {
-        Debug.Log("Enter mood: " + observerMood);
         int newObserverMood = (int)observerMood;
 
-        if (action != Actions.NONE && actions[(int)action].VisibleMood())
+        if (!possesed)
         {
-            switch (action)
+            if (action != Actions.NONE && actions[(int)action].VisibleMood())
             {
-                case Actions.STEAL_FOOD:
-                    Debug.Log("Steal food");
-                    newObserverMood += 1;
-                    break;
-                case Actions.STEAL_EGG:
-                    newObserverMood += 2;
-                    break;
-                case Actions.GIVE_FOOD:
-                    Debug.Log("Give food");
-                    newObserverMood -= 1;
-                    break;
-                case Actions.GIVE_EGG:
-                    newObserverMood -= 2;
-                    break;
-                case Actions.SAVE:
-                    newObserverMood -= 3;
-                    break;
-                case Actions.KILL:
-                    newObserverMood += 3;
-                    break;
-                default:
-                    break;
+                switch (action)
+                {
+                    case Actions.STEAL_FOOD:
+                        //Debug.Log("Steal food");
+                        newObserverMood += 1;
+                        break;
+                    case Actions.STEAL_EGG:
+                        newObserverMood += 2;
+                        break;
+                    case Actions.GIVE_FOOD:
+                        //Debug.Log("Give food");
+                        newObserverMood -= 1;
+                        break;
+                    case Actions.GIVE_EGG:
+                        newObserverMood -= 2;
+                        break;
+                    case Actions.SAVE:
+                        newObserverMood -= 3;
+                        break;
+                    case Actions.KILL:
+                        newObserverMood += 3;
+                        break;
+                    default:
+                        break;
+                }
+
             }
-
-            if (newObserverMood > ((int)Moods.NEUTRAL) + maxMoodLevel)
-                newObserverMood = ((int)Moods.NEUTRAL) + maxMoodLevel;
-            else if (newObserverMood < ((int)Moods.NEUTRAL) - maxMoodLevel)
-                newObserverMood = ((int)Moods.NEUTRAL) - maxMoodLevel;
-
-            Debug.Log("Exit mood: " + (Moods)newObserverMood);
         }
+        else
+        {
+            if (bonet) newObserverMood -= 1;
+            if (dolent) newObserverMood += 1;
+        }
+
+        if (newObserverMood > ((int)Moods.NEUTRAL) + maxMoodLevel)
+            newObserverMood = ((int)Moods.NEUTRAL) + maxMoodLevel;
+        else if (newObserverMood < ((int)Moods.NEUTRAL) - maxMoodLevel)
+            newObserverMood = ((int)Moods.NEUTRAL) - maxMoodLevel;
 
         return (Moods)newObserverMood;
     }
+    public void pickup(Food food)
+    {   
+        if(godFood != null)
+        {
+            godFood.Reset();
+            godFood.transform.parent = foodSpawner.transform.parent;
+            godFood = null;
+        }
+
+        godFood = food;
+        godSearch = true;
+    }
+
+
+
+    bool MoveTowards(Vector3 p, float r)
+    {
+        bool ret = false;
+        navMeshAgent.destination = p;
+
+        if (Utils.SqrDist2D(transform.position, p) < r)
+        {
+            navMeshAgent.SetDestination(transform.position);
+            ret = true;
+        }
+
+        return ret;
+    }
 }
+
+

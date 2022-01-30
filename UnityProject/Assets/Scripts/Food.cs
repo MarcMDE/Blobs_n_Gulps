@@ -46,6 +46,7 @@ public class Food : MonoBehaviour
 
     public void Take()
     {
+        taken = true;
         rb.isKinematic = true;
         rb.useGravity = false;
     }

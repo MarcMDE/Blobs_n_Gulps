@@ -12,6 +12,9 @@ public class Huevo : MonoBehaviour
     private SpawnerController spawner;
     private DepotManager depot;
     private float counter = 0f;
+
+    float spawnTime;
+    int eggsToSpawn;
     
     // Start is called before the first frame update
     void Start()

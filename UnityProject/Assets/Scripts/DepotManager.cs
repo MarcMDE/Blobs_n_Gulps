@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DepotManager : MonoBehaviour
 {
+    [SerializeField] Text text;
     int food;
 
     public int Food { get { return food;  } }
@@ -16,13 +18,18 @@ public class DepotManager : MonoBehaviour
     public void AddFood()
     {
         food+=1;
-        //Debug.Log(name + " food: " + food);
+        Debug.Log(name + " food: " + food);
+    }
+
+    private void Update()
+    {
+        text.text = food.ToString();
     }
 
     public void GetFood()
     {
         food -= 1;
-        //Debug.Log(name + " food: " + food);
+        Debug.Log(name + " food: " + food);
     }
 
     public bool UseFood(int n)

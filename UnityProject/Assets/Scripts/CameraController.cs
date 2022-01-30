@@ -73,6 +73,24 @@ public class CameraController : MonoBehaviour
                     selectedAgent.GetComponent<AgentController>().SetDestination(hit.point);
                 }
             }
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit hit;
+                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hit, 200, 128))
+                {
+                    Food food = hit.collider.GetComponent<Food>();
+                    if (!food.Selected)
+                    {
+                        food.Select();
+                        selectedAgent.GetComponent<AgentController>().pickup(food);
+                    }
+                }
+            }
+
+
+
         }
 
         if (Input.GetMouseButtonDown(0))

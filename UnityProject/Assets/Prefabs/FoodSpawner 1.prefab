@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1889091279463940765, guid: e94c9a84ec973344cb2c308b36704325, type: 3}
-  poolSize: 100
-  radius: 50
-  spawnTime: 0.2
-  offset: {x: 0, y: 12, z: 0}
+  poolSize: 500
+  spawnTime: 2.5
+  offset: {x: 0, y: 20, z: 0}
+  dec: 0.15
+  decTime: 15
+  minTime: 0.1

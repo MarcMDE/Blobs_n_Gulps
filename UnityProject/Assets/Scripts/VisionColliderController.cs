@@ -29,7 +29,6 @@ public class VisionColliderController : MonoBehaviour
             
             canSee = false;
             StartCoroutine(ResetVision());
-            
         }
     }
 
